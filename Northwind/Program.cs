@@ -21,6 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<ICustomerRepository, SqlCustomerRepository>();
 builder.Services.AddSingleton<IOrderRepository, SqlOrderRepository>();
+builder.Services.AddSingleton<IProductRepository, SqlProductRepository>();
 
 builder.Services.AddSingleton<OrderService, OrderService>();
 

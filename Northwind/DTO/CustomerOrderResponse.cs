@@ -22,8 +22,8 @@ public class OrderResponse
 {
     public int OrderID { get; set; }
     public DateTime OrderDate {get; set; }
-    public DateTime RequiredDate { get; set; }
-    public DateTime ShippedDate { get; set; }
+    public DateTime? RequiredDate { get; set; }
+    public DateTime? ShippedDate { get; set; }
     public IEnumerable<OrderDetailResponse> OrderDetails {get; set; }
 
     public OrderResponse(Order order)
