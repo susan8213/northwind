@@ -1,6 +1,6 @@
 using Northwind.Access;
+using Northwind.Exceptions;
 
-                
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuration
@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthorization();
 

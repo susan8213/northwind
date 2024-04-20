@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Access;
+using Northwind.Exceptions;
 using Northwind.Models;
 
 namespace Northwind.Controllers;
@@ -22,6 +23,9 @@ public class CustomerController : ControllerBase
     [HttpGet("{customerId}")]
     public async Task<ActionResult<Customer>> GetCustomer([FromRoute][Required] string customerId)
     {
-        return await _customerRepository.Get(customerId);
+        var result = await _customerRepository.Get(customerId);
+        if (result == null) throw new NotFoundException();
+        
+        return new OkObjectResult(result);
     }
 }
