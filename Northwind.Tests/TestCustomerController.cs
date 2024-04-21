@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Microsoft.AspNetCore.Mvc;
 using Northwind.Exceptions;
+using Northwind.Services;
 
 namespace Northwind.Tests;
 
@@ -14,12 +15,20 @@ public class TestCustomerController
 
     private ICustomerRepository _customerRepository;
     private ILogger<CustomerController> _logger;
+    private OrderService _orderService;
+    private ILogger<OrderService> _loggerOrderService;
+    private IOrderRepository _orderRepository;
+    private IProductRepository _productRepository;
 
     [TestInitialize]
     public void SetUp()
     {
         _customerRepository =  Substitute.For<ICustomerRepository>();
         _logger = Substitute.For<ILogger<CustomerController>>();
+
+        _orderRepository =  Substitute.For<IOrderRepository>();
+        _productRepository = Substitute.For<IProductRepository>();
+        _orderService = new OrderService(_loggerOrderService, _orderRepository, _productRepository, _customerRepository);
     }
 
     [TestMethod]
@@ -31,7 +40,7 @@ public class TestCustomerController
         _customerRepository.Get(Arg.Is(expectedCustomerId)).Returns(customer);
 
         // Act
-        var contoller = new CustomerController(_logger, _customerRepository);
+        var contoller = new CustomerController(_logger, _customerRepository, _orderService);
         var result = await contoller.GetCustomer(expectedCustomerId);
 
         // Assert
@@ -48,7 +57,7 @@ public class TestCustomerController
         _customerRepository.Get(Arg.Is(expectedCustomerId)).Returns(customer);
 
         // Act
-        var contoller = new CustomerController(_logger, _customerRepository);
+        var contoller = new CustomerController(_logger, _customerRepository, _orderService);
         try
         {
             var result = contoller.GetCustomer(expectedCustomerId).Result;
