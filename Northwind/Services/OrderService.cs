@@ -49,7 +49,9 @@ public class OrderService
         }
 
         
-        return await _orderRepository.CreateAsync(order);
+        var result = await _orderRepository.CreateAsync(order);
+        _logger.LogInformation($"Order [{result}] is successfully created.");
+        return result;
     }
 
     public async Task UpdateAsync(Order order)
@@ -59,10 +61,12 @@ public class OrderService
         if (originalOrder.ShippedDate != null) throw new ValidationException($"Order [{order.OrderID}] cannot be edited, because of it is already shipped.");
 
         await _orderRepository.UpdateAsync(order);
+        _logger.LogInformation($"Order [{order.OrderID}] is successfully updated.");
     }
 
     public async Task DeleteAsync(int orderId)
     {
         await _orderRepository.DeleteAsync(orderId);
+        _logger.LogInformation($"Order [{orderId}] is successfully deleted.");
     }
 }

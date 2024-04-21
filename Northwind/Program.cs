@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpLogging;
 using Northwind.Access;
 using Northwind.Exceptions;
 using Northwind.Services;
@@ -11,6 +12,16 @@ IConfiguration config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
                 .Build();
 builder.Configuration.AddConfiguration(config);
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+    logging.CombineLogs = true;
+});
 
 // Add services to the container.
 
@@ -33,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpLogging();
 
 app.UseHttpsRedirection();
 

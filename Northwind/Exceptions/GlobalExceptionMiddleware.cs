@@ -28,6 +28,7 @@ public class GlobalExceptionMiddleware
                 ErrorCode = ex.ErrorCode,
                 Message = ex.Message
             };
+            _logger.LogInformation($"Application Exception occured. [{responseContent.ErrorCode}] {ex.Message}");
             await HandleExceptionAsync(context, ex, responseContent);
         }
         catch (Exception ex)
@@ -37,6 +38,7 @@ public class GlobalExceptionMiddleware
                 ErrorCode = "InternalServerError",
                 Message = ex.Message
             };
+            _logger.LogError($"Unknown Exception occured. [{responseContent.ErrorCode}] {ex.Message} {ex.StackTrace}");
             await HandleExceptionAsync(context, ex, responseContent);
         }
     }

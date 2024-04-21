@@ -135,6 +135,7 @@ public class SqlOrderRepository : IOrderRepository
                     tran.Rollback();
 
                     // handle the error however you need to.
+                    _logger.LogError($"Error occured while creating order of customer [{order.CustomerID}] in DB.");
                     throw;
                 }
             }
@@ -172,6 +173,7 @@ public class SqlOrderRepository : IOrderRepository
                     tran.Rollback();
 
                     // handle the error however you need to.
+                    _logger.LogError($"Error occured while deleting order [{id}] in DB.");
                     throw;
                 }
             }
@@ -202,6 +204,7 @@ public class SqlOrderRepository : IOrderRepository
                     tran.Rollback();
 
                     // handle the error however you need to.
+                    _logger.LogError($"Error occured while updating order [{order.OrderID}] in DB.");
                     throw;
                 }
             }
